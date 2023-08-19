@@ -10,13 +10,14 @@ model, preprocess = clip.load("ViT-B/32", device=device)
 #     model = nn.DataParallel(model)
 
 image = preprocess(Image.open("ACE.jpg")).unsqueeze(0).to(device)
+# print(image.shape)
 text = clip.tokenize(["a man", "a dog", "a cat", "one piece", "Japan", "Ace"]).to(device)
 
 with torch.no_grad():
     logits_image, logits_text = model(image, text)
     probs = logits_image.softmax(dim=-1).cpu().numpy()
     
-    
+
 print(f"imagesize : {image.shape}, text size : {text.shape}")
 print(f"image : {logits_image}")
 print("label probs : ", probs)
